@@ -28,7 +28,7 @@ Follow these steps to run the project locally:
 
 1. Clone the repository
 ```
-git clone https://github.com/PlayzAhmed/a2sv-job-listing-application-task.git
+git clone https://github.com/PlayzAhmed/a2sv-job-listing-application-task-2.git
 ```
 2. Install dependencies
 ```
@@ -57,10 +57,13 @@ This project helped practice:
 ## 🖼 Screenshots
 
 **Home Page:**
-<img width="2814" height="1335" alt="image" src="https://github.com/user-attachments/assets/59a19d62-207d-455c-939e-775c8c4c78e3" />
+<img width="2879" height="1330" alt="image" src="https://github.com/user-attachments/assets/b22d3867-089b-42b2-94ac-e5580f028de9" />
 
 **Job Post Page:**
-<img width="2879" height="1266" alt="image" src="https://github.com/user-attachments/assets/c1d9dbc4-c2d0-4b28-9ba2-8b8dfc7d957c" />
+<img width="2879" height="1324" alt="image" src="https://github.com/user-attachments/assets/b92cd5e9-1e29-4442-9ec8-02b5effe6f85" />
+
+**Loading Page:**
+<img width="2877" height="1331" alt="image" src="https://github.com/user-attachments/assets/8934fdbf-f3d0-4a99-ae25-38008ea7f10c" />
 
 **Error Page:**
 <img width="2879" height="1345" alt="image" src="https://github.com/user-attachments/assets/5cdc29de-52a6-4093-9c45-e682abdabab7" />
