@@ -1,6 +1,5 @@
+"use client";
 import Link from "next/link";
-import JobData from "../db/jobData.json";
-import { notFound } from "next/navigation";
 import { Category2Color } from "../components/JobCard";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
@@ -11,28 +10,42 @@ import {
   faArrowLeft,
   faCrosshairs,
   faFire,
+  faCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import {
-  faCircleCheck,
   faCalendar,
   faCalendarCheck,
 } from "@fortawesome/free-regular-svg-icons";
+import { notFound } from "next/navigation";
+import { useGetJobByIdQuery } from "@/lib/features/jobList/jobListApi";
+import Loading from "../components/Loading";
 
-export default async function JobPost({
-  params,
-}: {
-  params: Promise<{ jobIndex: string }>;
-}) {
-  const JobDetails = JobData.job_postings;
-  const jobIndex = (await params).jobIndex;
-  if (
-    parseInt(jobIndex) > JobDetails.length ||
-    parseInt(jobIndex) < 0 ||
-    Number.isNaN(parseInt(jobIndex))
-  ) {
+type JobPostClientProps = {
+  id: string;
+};
+
+const JobPostClient = ({ id }: JobPostClientProps) => {
+  console.log(id);
+  const { data, isLoading, isError } = useGetJobByIdQuery(id);
+
+  if (isLoading) {
+    return Loading();
+  }
+
+  if (isError) {
     notFound();
   }
-  const Job = JobDetails[parseInt(jobIndex)];
+
+  const formatDate = (dateString: string | null | undefined): string => {
+    if (!dateString) return "undefined";
+
+    return new Date(dateString).toLocaleDateString("en-US", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+    });
+  };
+
   return (
     <>
       <div className="m-8">
@@ -42,46 +55,54 @@ export default async function JobPost({
             icon={faArrowLeft}
           />
         </Link>
-        <main className="flex flex-row gap-20">
+        <main className="flex flex-row gap-20 justify-between items-center">
           <section className="flex flex-col gap-5">
             <div>
-              <h1 className="text-2xl font-black text-blue-950">Title</h1>
-              <p>{Job.title}</p>
+              <h1 className="text-2xl font-black text-blue-950">
+                {data?.data.title}
+              </h1>
+              <p className="text-lg text-gray-500">{data?.data.orgName}</p>
             </div>
             <div>
               <h1 className="text-2xl font-black text-blue-950">Description</h1>
-              <p>{Job.description}</p>
+              <p>{data?.data.description}</p>
             </div>
             <div>
               <h1 className="text-2xl font-black text-blue-950">
                 Responsibilities
               </h1>
               <ul>
-                {Job.responsibilities.map((responsibility, index) => (
-                  <li key={index}>
-                    <FontAwesomeIcon
-                      className="text-green-500"
-                      icon={faCircleCheck}
-                    ></FontAwesomeIcon>
-                    {responsibility}
-                  </li>
-                ))}
+                {data?.data.responsibilities
+                  ?.split("\n")
+                  .map((responsibility) => (
+                    <li className="flex flex-row gap-1">
+                      <div>
+                        <FontAwesomeIcon
+                          icon={faCheck}
+                          className="text-green-400"
+                        />
+                      </div>
+                      <p>{responsibility}</p>
+                    </li>
+                  ))}
               </ul>
+            </div>
+            <div>
+              <h1 className="text-2xl font-black text-blue-950">
+                Requirements
+              </h1>
+              <p>{data?.data.requirements}</p>
             </div>
             <div>
               <h1 className="text-2xl font-black text-blue-950">
                 Ideal Candidate we want
               </h1>
-              <ul className="list-disc ml-5">
-                <li>{Job.ideal_candidate.age}</li>
-                <li>{Job.ideal_candidate.gender}</li>
-                {Job.ideal_candidate.traits.map((responsibility, index) => (
-                  <li key={index}>{responsibility}</li>
-                ))}
-              </ul>
+              <p>{data?.data.idealCandidate}</p>
             </div>
             <div>
-              <h1 className="text-2xl font-black text-blue-950">When & Where</h1>
+              <h1 className="text-2xl font-black text-blue-950">
+                When & Where
+              </h1>
               <div className="flex flex-row items-center gap-2">
                 <div className="w-8 h-8 border rounded-full flex justify-center items-center border-gray-300">
                   <FontAwesomeIcon
@@ -89,7 +110,7 @@ export default async function JobPost({
                     icon={faLocationDot}
                   />
                 </div>
-                <p>{Job.when_where}</p>
+                <p>{data?.data.whenAndWhere}</p>
               </div>
             </div>
           </section>
@@ -107,7 +128,9 @@ export default async function JobPost({
                   </div>
                   <div>
                     <h2 className="text-gray-500">Posted On</h2>
-                    <p className="font-medium">{Job.about.posted_on}</p>
+                    <p className="font-medium">
+                      {formatDate(data?.data.datePosted)}
+                    </p>
                   </div>
                 </li>
                 <li className="flex flex-row gap-2 items-center">
@@ -116,7 +139,9 @@ export default async function JobPost({
                   </div>
                   <div>
                     <h2 className="text-gray-500">Deadline</h2>
-                    <p className="font-medium">{Job.about.deadline}</p>
+                    <p className="font-medium">
+                      {formatDate(data?.data.deadline)}
+                    </p>
                   </div>
                 </li>
                 <li className="flex flex-row gap-2 items-center">
@@ -127,8 +152,12 @@ export default async function JobPost({
                     />
                   </div>
                   <div>
-                    <h2 className="text-gray-500">Location</h2>
-                    <p className="font-medium">{Job.about.location}</p>
+                    <h2 className="text-gray-500">Work location</h2>
+                    <p className="font-medium">
+                      {data?.data.opType == "inPerson"
+                        ? data?.data.location?.join(", ")
+                        : "Remote"}
+                    </p>
                   </div>
                 </li>
                 <li className="flex flex-row gap-2 items-center">
@@ -140,7 +169,9 @@ export default async function JobPost({
                   </div>
                   <div>
                     <h2 className="text-gray-500">Start Date</h2>
-                    <p className="font-medium">{Job.about.start_date}</p>
+                    <p className="font-medium">
+                      {formatDate(data?.data.startDate)}
+                    </p>
                   </div>
                 </li>
                 <li className="flex flex-row gap-2 items-center">
@@ -152,7 +183,9 @@ export default async function JobPost({
                   </div>
                   <div>
                     <h2 className="text-gray-500">End Date</h2>
-                    <p className="font-medium">{Job.about.end_date}</p>
+                    <p className="font-medium">
+                      {formatDate(data?.data.endDate)}
+                    </p>
                   </div>
                 </li>
               </ul>
@@ -163,7 +196,7 @@ export default async function JobPost({
                 Categories
               </h1>
               <div className="flex flex-row flex-wrap gap-2">
-                {Job.about.categories.map((category) => (
+                {data?.data.categories?.map((category) => (
                   <span
                     key={category}
                     className={
@@ -182,7 +215,7 @@ export default async function JobPost({
                 Required Skills
               </h1>
               <div className="flex flex-row flex-wrap gap-2">
-                {Job.about.required_skills.map((skill) => (
+                {data?.data.requiredSkills?.map((skill) => (
                   <div key={skill} className="py-1 px-3 bg-violet-50">
                     <span className="text-violet-800">{skill}</span>
                   </div>
@@ -194,4 +227,6 @@ export default async function JobPost({
       </div>
     </>
   );
-}
+};
+
+export default JobPostClient;

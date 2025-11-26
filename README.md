@@ -7,17 +7,20 @@ This task is part of the A2SV Web Track Assignments.
 
 This project demonstrates:
 
-- A reusable Job Card component
-- A complete Job Listing Dashboard
-- UI built based on the provided Figma design
-- Dummy data populated from the given JSON
-- Styled completely using Tailwind CSS
+- Fetch data from a real backend API
+- Replace dummy JSON with dynamic API data
+- Use Redux Toolkit Query for state & data management
+- Display jobs dynamically on cards
+- Implement error handling
+- Maintain scalable, clean code structure
 
 ## 🧠 Technologies Used
 
 - React
 - Next.js
 - Tailwind CSS
+- Redux Toolkit
+- RTK Query
 
 ## 📥 Installation & Setup
 
@@ -43,11 +46,13 @@ The app will run at:
 
 This project helped practice:
 
-- Building reusable components with Next.js
-- Using Tailwind CSS for UI design
-- Implementing layouts based on Figma design
-- Handling and mapping static JSON data
-- Structuring scalable frontend applications using App Router
+- Full API integration using RTK Query
+- Replacement of dummy JSON data
+- Dynamic job cards from API
+- Dynamic job details pages
+- Error & loading states
+- Clean Redux architecture
+- Modular component system
 
 ## 🖼 Screenshots
 

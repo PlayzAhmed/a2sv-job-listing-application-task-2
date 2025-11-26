@@ -1,0 +1,33 @@
+export type JobType =  {
+      id: string | null | undefined;
+      title: string | null | undefined;
+      description: string | null | undefined;
+      responsibilities: string | null | undefined;
+      requirements: string | null | undefined;
+      idealCandidate: string | null | undefined;
+      categories: string[] | null | undefined;
+      opType: string | null | undefined;
+      startDate: string | null | undefined;
+      endDate: string | null | undefined;
+      deadline: string | null | undefined;
+      location: string[] | null | undefined;
+      requiredSkills:string[] | null | undefined;
+      whenAndWhere: string | null | undefined;
+      orgID: string | null | undefined;
+      datePosted: string | null | undefined;
+      status: string | null | undefined;
+      applicantsCount: number | null | undefined;
+      viewsCount: number | null | undefined;
+      orgName: string | null | undefined;
+      logoUrl: string | null | undefined;
+      isBookmarked: boolean | null | undefined;
+      isRolling: boolean | null | undefined;
+      questions: string | null | undefined;
+      perksAndBenefits: string | null | undefined;
+      createdAt: string | null | undefined;
+      updatedAt: string | null | undefined;
+      orgPrimaryPhone: string | null | undefined;
+      orgEmail: string | null | undefined;
+      average_rating: number | null | undefined;
+      total_reviews: number | null | undefined;
+}
