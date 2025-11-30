@@ -2,7 +2,6 @@
 
 import { useGetAllJobsQuery } from "@/lib/features/jobList/jobListApi";
 import JobCard from "./components/JobCard";
-import JobData from './db/jobData.json'
 import Loading from "./components/Loading";
 import { notFound } from "next/navigation";
 
